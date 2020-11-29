@@ -116,6 +116,15 @@ async def apply_hooks(hass):
                             }};
                         }});
 
+                        customElements.whenDefined('ha-init-page').then(() => {{
+                            const InitPage = customElements.get('ha-init-page');
+                            const updated = InitPage.prototype.updated;
+                            InitPage.prototype.updated = function(changedProperties) {{
+                                updated.bind(this)(changedProperties);
+                                this.shadowRoot.querySelector("img").style.display = "none";
+                            }};
+                        }});
+
                         window.setInterval(() => {{
                             if(!document.title.endsWith("- {title}") && document.title !== "{title}") {{
                                 document.title = document.title.replace(/Home Assistant/, "{title}");
